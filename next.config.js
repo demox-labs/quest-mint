@@ -11,6 +11,8 @@ module.exports = withPWA({
     TWITTER: process.env.TWITTER,
     DISCORD: process.env.DISCORD,
     RPC_URL: process.env.RPC_URL,
+    REDIS_HOST: process.env.REDIS_HOST,
+    REDIS_PORT: process.env.REDIS_PORT,
   },
   reactStrictMode: true,
   pwa: {

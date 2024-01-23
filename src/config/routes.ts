@@ -6,6 +6,7 @@ const routes = {
   add: '/add',
   settings: '/settings',
   authorize: '/authorize',
+  success: '/success',
 };
 
 export default routes;

@@ -50,7 +50,6 @@ export function bigIntToString(bigIntValue: bigint): string {
   }
 
   bytes.reverse();
-
   const decoder = new TextDecoder();
   const asciiString = decoder.decode(Uint8Array.from(bytes));
   return asciiString;

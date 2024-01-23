@@ -24,7 +24,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const wallets = useMemo(
     () => [
       new LeoWalletAdapter({
-        appName: 'Leo NFT',
+        appName: 'Coinbase Quest NFT',
       }),
     ],
     []

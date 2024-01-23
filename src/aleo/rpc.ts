@@ -36,21 +36,25 @@ export async function getVerifyingKey(programId: string, functionName: string): 
   return verifyingKey;
 }
 
-export async function getClaimValue(claim: string): Promise<string> {
-  const response = await fetch(`${ALEO_URL}program/${NFTProgramId}/mapping/claims_to_nfts/${claim}`);
-  return response.text();
-}
-
-export async function getTransactionsForProgram(programId: string, functionName: string, apiUrl: string): Promise<any> {
+export async function getTransactionsForProgram(programId: string, functionName: string, apiUrl: string, page: number): Promise<any> {
   const client = getClient(apiUrl);
   const transaction = await client.request('transactionsForProgram', {
       programId,
       functionName,
-      "page": 0,
+      page,
       "maxTransactions": 1000
   });
   return transaction;
 }
+
+export const getTransactionsCount = async(programId: string, functionName: string): Promise<number> => {
+  const client = getClient(TESTNET3_API_URL);
+  const txCount = await client.request('transactionsForProgramCount', {
+    programId,
+    functionName
+  });
+  return txCount;
+};
 
 export async function getAleoTransactionsForProgram(programId: string, functionName: string, apiUrl: string, page = 0, maxTransactions = 1000): Promise<any> {
   const client = getClient(apiUrl);
@@ -64,11 +68,16 @@ export async function getAleoTransactionsForProgram(programId: string, functionN
   return result;
 }
 
-
 export const getAleoTransaction = async (id: string): Promise<any> => {
   const client = getClient(TESTNET3_API_URL);
   return await client.request('aleoTransaction', { id });
 };
+
+export async function getTransaction(transactionId: string): Promise<any> {
+  const client = getClient(TESTNET3_API_URL);
+  const result = await client.request('transaction', { id: transactionId});
+  return result;
+}
 
 // Handle the case where a whitelist operation is done twice for the same address
 export async function getWhitelist(apiUrl: string): Promise<any> {
@@ -136,11 +145,12 @@ export async function getBaseURI(apiUrl: string): Promise<any> {
 
   const transaction = await getAleoTransaction(transactionIds[transactionIds.length - 1]);
   const urlBigInts = parseStringToBigIntArray(transaction.transaction.execution.transitions[0].inputs[0].value);
+  
   return joinBigIntsToString(urlBigInts);
 }
 
 export async function getSettingsStatus(apiUrl: string): Promise<number> {
-  const transactions = await getTransactionsForProgram(NFTProgramId, 'update_toggle_settings', apiUrl);
+  const transactions = await getTransactionsForProgram(NFTProgramId, 'update_toggle_settings', apiUrl, 0);
   const transactionIds = transactions.map((transactionId: any) => transactionId.transaction_id);
   if (transactionIds.length === 0) {
     return 5;
@@ -169,7 +179,7 @@ export async function getClaims(apiUrl: string): Promise<any[]> {
 
 export async function getNFTs(apiUrl: string, fetchProperties: boolean = true): Promise<{ nfts: any[], baseURI: string}> {
   const baseUri = await getBaseURI(apiUrl);
-  const addNFTTransactionMetadata = await getAleoTransactionsForProgram(NFTProgramId, 'add_nft', apiUrl);
+  const addNFTTransactionMetadata = await getAleoTransactionsForProgram(NFTProgramId, 'mint', apiUrl);
 
   let nfts: any[] = addNFTTransactionMetadata.map((txM: any) => {
     const tx = txM.transaction;
@@ -224,4 +234,10 @@ export async function getJSON(url: string): Promise<any> {
   const response = await fetch(url);
   const data = await response.json();
   return data;
+}
+
+export async function getNextQuestMintId(apiUrl: string, nextTokenIds: string[]): Promise<string> {
+  const client = getClient(TESTNET3_API_URL);
+  const response = await client.request('getNextQuestMintId', { nextTokenIds });
+  return response.tokenId;
 }
