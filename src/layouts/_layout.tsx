@@ -1,52 +1,32 @@
-import { useWindowScroll } from '@/lib/hooks/use-window-scroll';
-import Logo from '@/components/ui/logo';
 import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 import React from 'react';
-import { WalletMultiButton } from '@demox-labs/aleo-wallet-adapter-reactui';
-import Button from '@/components/ui/button';
 import { HomeIcon } from '@/components/icons/home';
 import { Twitter } from '@/components/icons/twitter';
 import { Discord } from '@/components/icons/discord';
+import { FaXTwitter} from 'react-icons/fa6';
+import { FaDiscord } from 'react-icons/fa6';
+import { GoGlobe } from 'react-icons/go';
 
 require('@demox-labs/aleo-wallet-adapter-reactui/dist/styles.css');
 
-function HeaderRightArea() {
-  return (
-    <div className="relative order-last flex shrink-0 items-center gap-3 sm:gap-6 lg:gap-8">
-      <WalletMultiButton className="bg-[#1253fa]" />
-    </div>
-  );
-}
-
-
-export function Header() {
-  const windowScroll = useWindowScroll();
+export function Footer() {
   const isMounted = useIsMounted();
 
   return (
-    <nav
-      className={`fixed top-0 z-30 flex w-full items-center justify-between px-4 transition-all duration-300 ltr:right-0 rtl:left-0 sm:px-6 lg:px-8 xl:px-10 3xl:px-12 ${
-        isMounted && windowScroll.y > 10
-          ? 'h-16 bg-gradient-to-b from-white to-white/80 shadow-card backdrop-blur dark:from-dark dark:to-dark/80 sm:h-20'
-          : 'h-16 bg-body bg-black sm:h-24'
-      }`}
-    >
-      <div className="flex h-full items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10 3xl:px-12">
-        {process.env.URL && <a className="mx-2" href={`${process.env.URL}`}>
-          <HomeIcon />
+    <div className="flex h-full items-center justify-center p-4 sm:p-6 lg:p-8 xl:p-10 3xl:p-12">
+        {process.env.URL && <a className="mx-2 rounded-full bg-black p-2 border border-white" href={`${process.env.URL}`}>
+          <GoGlobe width="18" height="18" />
         </a>
         }
-        {process.env.TWITTER && <a className="mx-2 rounded-full bg-white p-1" href={`${process.env.TWITTER}`}>
-          <Twitter width="18" height="18" />
+        {process.env.TWITTER && <a className="mx-2 rounded-full bg-black p-2 border border-white" href={`${process.env.TWITTER}`}>
+          <FaXTwitter width="18" height="18" />
         </a>
         }
-        {process.env.DISCORD && <a className="mx-2 rounded-full bg-white p-1" href={`${process.env.DISCORD}`}>
-          <Discord width="18" height="18" />
+        {process.env.DISCORD && <a className="mx-2 rounded-full bg-black p-2 border border-white" href={`${process.env.DISCORD}`}>
+          <FaDiscord width="18" height="18" />
         </a>
         }
       </div>
-      <HeaderRightArea />
-    </nav>
   );
 }
 
@@ -56,11 +36,11 @@ export default function Layout({
   children,
 }: React.PropsWithChildren<LayoutProps>) {
   return (
-    <div className="bg-light-100 bg-black flex min-h-screen flex-col">
-      <Header />
-      <main className="mb-12 flex flex-grow flex-col pt-4 sm:pt-12">
+    <div className="bg-image bg-light-100 bg-black bg-no-repeat bg-cover flex min-h-screen flex-col">
+      <main className="flex flex-grow flex-col sm:pt-2">
         {children}
       </main>
+      <Footer />
     </div>
   );
 }

@@ -30,9 +30,13 @@ module.exports = {
           500: '#a0aec0',
           600: '#D3D7DE',
           700: '#E9EBEF',
-          800: '#F2F3F6',
+          800: '#181d24',
           900: '#F8F9FA'
         },
+        violet: {
+          500: '#634CFF',
+          700: '#4735B8'
+        }
       },
       spacing: {
         13: '3.375rem',
@@ -48,7 +52,7 @@ module.exports = {
         'calc-358': 'calc(100% - 358px)',
       },
       fontFamily: {
-        body: ['Fira Code', 'monospace'],
+        body: ['Inter', 'monospace'],
       },
       fontSize: {
         '13px': ['13px', '18px'],
@@ -69,6 +73,7 @@ module.exports = {
         main: '0px 4px 8px rgba(0, 0, 0, 0.08)',
       },
       backgroundImage: {
+        'image': 'url("/bg-logo.svg")',
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       animation: {
